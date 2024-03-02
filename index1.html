@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Data to Firebase</title>
+</head>
+<body>
+    <!-- <input type="text" id="textInput" placeholder="Enter your name">
+    <button id="submitButton">Add Data</button> -->
+
+    <script src="script.js">
+        // const databaseURL = "https://xepchugame-default-rtdb.firebaseio.com/";
+
+        // async function addDataToFirebase() {
+        //     try {
+        //         const nameInput = document.getElementById("textInput");
+        //         const name = nameInput.value.trim(); // Lấy giá trị từ ô văn bản và loại bỏ khoảng trắng đầu cuối
+
+        //         // Kiểm tra nếu ô văn bản không trống
+        //         if (name !== "") {
+        //             const response = await fetch(databaseURL + "data.json", {
+        //                 method: "POST",
+        //                 headers: {
+        //                     "Content-Type": "application/json"
+        //                 },
+        //                 body: JSON.stringify({ name: name })
+        //             });
+        //             if (!response.ok) {
+        //                 throw new Error("Lỗi khi gửi yêu cầu: " + response.status);
+        //             }
+        //             const responseData = await response.json(); // Lấy dữ liệu phản hồi từ Firebase
+        //             const newKey = responseData.name; // newKey là key được Firebase tự động tạo
+        //             const link = `https://xepchugame-default-rtdb.firebaseio.com/data/${newKey}.json`;
+        //             console.log("Dữ liệu đã được thêm vào Firebase.");
+        //             console.log("Link để truy cập dữ liệu mới:", link);
+
+        //         } else {
+        //             console.log("Vui lòng nhập tên trước khi thêm dữ liệu.");
+        //         }
+        //     } catch (error) {
+        //         console.error("Lỗi khi thêm dữ liệu vào Firebase:", error);
+        //     }
+        // }
+        //     var link = linkMain;
+    </script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xếp Chữ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    integrity="sha512-dcwczTrjQXssmpXw4i6+M5wq0XlbnyzWs57ivmb5+9EpCEpNXLi+3CYDE9vFvAn9e6xZFWLf4Hu2QD2p39tLzw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* CSS cho phần thông báo lá thư */
+    #congratulations {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ff9999;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 1000;
+      animation: slideIn 0.5s forwards;
+    }
+
+    .letter-envelope {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      animation: envelopeAnimation 1.5s infinite alternate;
+    }
+
+    .envelope {
+      width: 350px;
+      height: 200px;
+      background-color: #fff;
+      border: 2px solid #ff9999;
+      border-radius: 10px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    .envelope:before,
+    .envelope:after {
+      content: "";
+      position: absolute;
+      width: 40px;
+      height: 30px;
+      background-color: #fff;
+      border-top: 2px solid #ff9999;
+    }
+
+    .envelope:before {
+      top: -2px;
+      left: 20px;
+      transform: rotate(-45deg);
+    }
+
+    .envelope:after {
+      top: -2px;
+      right: 20px;
+      transform: rotate(45deg);
+    }
+
+    .letter {
+      width: 80%;
+      height: 80%;
+      background-color: #ffffff;
+      position: absolute;
+      top: 10%;
+      left: 10%;
+      border-radius: 5px;
+    }
+
+    /* Hiệu ứng cho thông báo lá thư */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY();
+      }
+    }
+
+    @keyframes envelopeAnimation {
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(10px);
+      }
+    }
+
+    /* CSS cho nút "Đồng ý" và "Không đồng ý" */
+    button {
+      padding: 10px 20px;
+      background-color: #ff4d4d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e60000;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    
+  </style>
+</head>
+
+<body>
+  <div id="gameContainer" class="container">
+    <h1>Xếp Chữ</h1>
+    <input type="text" id="textInput" placeholder="Nhập câu đố...">
+    <button id="submitButton">Thêm</button>
+    <div id="linkContainer" style="display: none;"></div>
+    
+    <p>Sắp xếp các từ sau thành các từ có ý nghĩa:</p>
+    <p style="font-size: 15px;">Lưu ý: nhấn giữ lâu và kéo thả vào ô</p>
+    <div id="wordList">
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word1">A</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word2">L</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word3">N</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word4">H</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word5">O</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word6">E</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word7">V</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word8">M</div>
+      <div class="word" draggable="true" ondragstart="drag(event)" id="word9">E</div>
+    </div>
+    <div id="dropZone" ondrop="drop(event)" ondragover="allowDrop(event)">
+      Kéo từ vào đây
+    </div>
+    <button id="checkButton">Kiểm tra</button>
+  </div>
+
+
+
+  <div id="dataContainer"></div>
+  <div id="congratulations" class="hidden">
+    <div class="letter-envelope" onclick="openLetter()">
+      <div class="envelope"></div>
+      <div class="letter"> <img src="image1.gif" alt="Trái tim" class="heart-gif"></div>
+    </div>
+    <div id="letterContent" class="hidden">
+      <p>Chúc mừng! Bạn đã hoàn thành xếp chữ!</p><br>
+      <p>Sau đây là điều bất ngờ...</p>
+      <button id="agreeButton1" onclick="nextStep()">Đồng ý</button>
+      <button id="agreeButton2" class="hidden" onclick="nextStep()">Đồng ý</button>
+      <button onclick="notnext()">Không đồng ý</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

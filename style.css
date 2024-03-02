@@ -1,0 +1,122 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffe6e6; /* Màu hồng nhạt */
+}
+
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+h1 {
+  font-size: 36px;
+  color: #333;
+}
+
+p {
+  font-size: 18px;
+  color: #666;
+}
+
+.word {
+  display: inline-block;
+  background-color: #f2d9d9; /* Màu hồng nhạt */
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#dropZone {
+  border: 2px dashed #ff9999; /* Màu hồng đậm */
+  padding: 20px;
+  margin: 20px auto;
+  width: 200px;
+  min-height: 50px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #ff4d4d; /* Màu hồng đậm */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e60000; /* Màu đỏ đậm */
+}
+
+
+.hidden {
+  display: none;
+}
+
+/* CSS cho phần thông báo chúc mừng */
+#congratulations {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ff9999;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 1000; 
+}
+
+.heart-gif {
+  width: 200px; /* Điều chỉnh kích thước của hình ảnh */
+  height: auto;
+  position: absolute; /* Đặt vị trí tùy ý */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Căn giữa hình ảnh */
+  z-index: 1; /* Đảm bảo hình ảnh được hiển thị trên lá thư */
+}
+
+#textInput {
+  padding: 10px;
+  width: 220px;
+  border: 2px solid #ff9999;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-right: 10px; /* Thêm margin để tạo khoảng cách giữa input và button */
+}
+
+#submitButton {
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+#linkContainer {
+  margin-top: 15px;
+  display: none;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  background-color: #ff9999;
+  border: 2px solid #ff9999;
+}
+
+#linkContainer.show {
+  display: block;
+  opacity: 1;
+}
+
+
