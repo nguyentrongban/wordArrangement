@@ -259,5 +259,81 @@ function closeLetter() {
     document.getElementById('letterContent').classList.add('hidden');
 }
 
+//ADMIN
 
+// Hàm để lấy địa chỉ IP của người truy cập
+async function getIPAddress() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        if (!response.ok) {
+            throw new Error('Lỗi khi lấy địa chỉ IP: ' + response.statusText);
+        }
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        console.error("Lỗi khi lấy địa chỉ IP:", error);
+        throw error;
+    }
+}
 
+// Hàm để ghi dữ liệu lên Firebase Realtime Database
+async function logVisit() {
+    try {
+        const databaseURL = "https://xepchugame-default-rtdb.firebaseio.com/";
+
+        // Lấy ngày và giờ hiện tại
+        const timestamp = new Date().toLocaleString();
+
+        // Lấy địa chỉ IP của người dùng
+        const ipAddress = await getIPAddress();
+
+        // Tăng số lượt truy cập lên 1 và lưu vào Firebase Realtime Database
+        const response = await fetch(databaseURL + "visits.json", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                timestamp: timestamp,
+                ipAddress: ipAddress
+            })
+        });
+        if (!response.ok) {
+            throw new Error("Lỗi khi gửi yêu cầu: " + response.status);
+        }
+
+        console.log("Dữ liệu đã được thêm vào Firebase:", { timestamp: timestamp, ipAddress: ipAddress });
+
+    } catch (error) {
+        console.error("Lỗi khi ghi dữ liệu vào Firebase:", error);
+        throw error;
+    }
+}
+
+// Hàm để lấy tổng số lượt truy cập
+async function getTotalVisits() {
+    try {
+        const databaseURL = "https://xepchugame-default-rtdb.firebaseio.com/";
+        const response = await fetch(databaseURL + "visits.json");
+        if (!response.ok) {
+            throw new Error("Lỗi khi gửi yêu cầu: " + response.status);
+        }
+        const data = await response.json();
+        const totalVisits = Object.keys(data).length;
+        console.log("Tổng số lượt truy cập:", totalVisits);
+        return totalVisits;
+    } catch (error) {
+        console.error("Lỗi khi lấy tổng số lượt truy cập:", error);
+        throw error;
+    }
+}
+
+// Ghi lại lượt truy cập mỗi khi trang được tải
+window.onload = async function() {
+    try {
+        await logVisit();
+        await getTotalVisits();
+    } catch (error) {
+        console.error("Lỗi khi thực hiện các thao tác:", error);
+    }
+};
