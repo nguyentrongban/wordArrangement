@@ -56,8 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function addDataToFirebase() {
     try {
         const nameInput = document.getElementById("textInput");
-        const name = nameInput.value.trim();
-
+        const name = nameInput.value.trim().split(' ').join(''); // Loại bỏ dấu cách từ chuỗi nhập liệu
         if (name !== "") {
             const response = await fetch(databaseURL + "data.json", {
                 method: "POST",
@@ -337,3 +336,45 @@ window.onload = async function() {
         console.error("Lỗi khi thực hiện các thao tác:", error);
     }
 };
+
+//////////////////////////////////////////////////////////////////////////////
+ // gợi ý theo t/g
+ let timeoutID;
+
+        // Khai báo hàm để bắt đầu đếm thời gian
+        function startTimer() {
+            timeoutID = setTimeout(showHint, 90000); // 120000 milliseconds = 2 phút
+        }
+
+        // Khai báo hàm để dừng hẹn giờ
+        function stopTimer() {
+            clearTimeout(timeoutID);
+        }
+
+        // Hàm để hiển thị dấu chấm hỏi và gợi ý
+        function showHint() {
+            // Hiển thị dấu chấm hỏi
+            const hintButton = document.getElementById('hintButton');
+            hintButton.classList.remove('hidden');
+
+            // Gán sự kiện click cho dấu chấm hỏi để hiển thị gợi ý
+            hintButton.addEventListener('click', showHintContent);
+
+            // Dừng hẹn giờ (nếu có)
+            stopTimer();
+        }
+
+        // Hàm để hiển thị nội dung gợi ý
+        function showHintContent() {
+            // Hiển thị nội dung gợi ý từ biến correctOrder
+            const hintContent = document.getElementById('hintContent');
+            hintContent.textContent = "Gợi ý: " + correctOrder.join(', ');
+            hintContent.classList.remove('hidden');
+
+            // Ẩn dấu chấm hỏi sau khi hiển thị gợi ý
+            const hintButton = document.getElementById('hintButton');
+            hintButton.classList.add('hidden');
+        }
+
+        // Gọi hàm bắt đầu đếm thời gian khi trang được tải
+        window.onload = startTimer;

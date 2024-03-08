@@ -120,3 +120,51 @@ button:hover {
 }
 
 
+/* css gợi ý */
+#hintButton {
+  padding: 10px;
+  background-color: #ff9999; /* Màu nền */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+#hintButton:hover {
+  background-color: #ff6666; /* Màu nền khi di chuột qua */
+}
+
+#hintContent {
+  top: -4%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Đưa phần tử ra giữa màn hình */
+  position: fixed;
+  padding: 10px;
+  background-color: #fff; /* Màu nền */
+  color: #333; /* Màu chữ */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+}
+
+#hintContent p {
+  margin: 0;
+}
+
+#hintContent::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+}
+
+
+
+
+
+

@@ -125,6 +125,11 @@
 
 <body>
   <div id="gameContainer" class="container">
+     <!-- Dấu chấm hỏi và gợi ý -->
+    <button id="hintButton" class="hidden" onclick="showHint()">?</button>
+    <div id="hintContent" class="hidden">
+        <p id="hintText"></p>
+    </div>
     <h1>Xếp Chữ</h1>
     <input type="text" id="textInput" placeholder="Nhập câu đố...">
     <button id="submitButton">Thêm</button>
@@ -147,6 +152,7 @@
       Kéo từ vào đây
     </div>
     <button id="checkButton">Kiểm tra</button>
+    
   </div>
 
 
@@ -165,6 +171,9 @@
       <button onclick="notnext()">Không đồng ý</button>
     </div>
   </div>
+
+
+
 
   <script src="script.js"></script>
 </body>
