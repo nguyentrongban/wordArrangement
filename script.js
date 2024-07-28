@@ -241,29 +241,14 @@ function nextStep() {
     window.location.href = "cuaanh.html"; // Chuyển đến trang bước tiếp theo
 }
 
-    function notnext() {
-        // Hiển thị thông báo kêu bắt buộc chọn lại
-        alert('Vui lòng chọn lại!');
-
-        // Ẩn nút "Không đồng ý"
-        document.getElementById('congratulations').classList.add('hidden');
-
-        // Hiển thị nút "Đồng ý" thứ hai
-        document.getElementById('agreeButton2').classList.remove('hidden');
-
-        // Tạo phần tử thông báo bằng Bootstrap
-        const alertHTML = `
-            <div class="alert alert-success" role="alert">
-                <h4 class="alert-heading">Well done!</h4>
-                <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-            </div>
-        `;
-
-        // Thêm thông báo vào phần tử chứa
-        document.getElementById('alert-container').innerHTML = alertHTML;
-    }
+   function notnext() {
+    // Hiển thị thông báo kêu bắt buộc chọn lại
+    alert('Vui lòng chọn lại!');
+    // Ẩn nút "Không đồng ý"
+    document.getElementById('congratulations').querySelector('button:last-of-type').classList.add('hidden');
+    // Hiển thị nút "Đồng ý" thứ hai
+    document.getElementById('agreeButton2').classList.remove('hidden');
+}
 
 function openLetter() {
     document.getElementById('letterContent').classList.remove('hidden');
