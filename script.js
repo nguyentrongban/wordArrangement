@@ -241,14 +241,43 @@ function nextStep() {
     window.location.href = "cuaanh.html"; // Chuyển đến trang bước tiếp theo
 }
 
-function notnext() {
-    // Hiển thị thông báo kêu bắt buộc chọn lại
-    alert('Vui lòng chọn lại!');
-    // Ẩn nút "Không đồng ý"
-    document.getElementById('congratulations').querySelector('button:last-of-type').classList.add('hidden');
-    // Hiển thị nút "Đồng ý" thứ hai
-    document.getElementById('agreeButton2').classList.remove('hidden');
-}
+ function notnext() {
+        // Hiển thị thông báo kêu bắt buộc chọn lại
+        alert('Vui lòng chọn lại!');
+
+        // Ẩn nút "Không đồng ý"
+        document.getElementById('congratulations').classList.add('hidden');
+
+        // Hiển thị nút "Đồng ý" thứ hai
+        document.getElementById('agreeButton2').classList.remove('hidden');
+
+        // Tạo phần tử thông báo
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success';
+        alertDiv.role = 'alert';
+        
+        const heading = document.createElement('h4');
+        heading.className = 'alert-heading';
+        heading.innerText = 'Well done!';
+        
+        const paragraph1 = document.createElement('p');
+        paragraph1.innerText = 'Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.';
+        
+        const hr = document.createElement('hr');
+        
+        const paragraph2 = document.createElement('p');
+        paragraph2.className = 'mb-0';
+        paragraph2.innerText = 'Whenever you need to, be sure to use margin utilities to keep things nice and tidy.';
+
+        // Thêm các phần tử vào thông báo
+        alertDiv.appendChild(heading);
+        alertDiv.appendChild(paragraph1);
+        alertDiv.appendChild(hr);
+        alertDiv.appendChild(paragraph2);
+
+        // Thêm thông báo vào phần tử chứa
+        document.getElementById('alert-container').appendChild(alertDiv);
+    }
 
 function openLetter() {
     document.getElementById('letterContent').classList.remove('hidden');
