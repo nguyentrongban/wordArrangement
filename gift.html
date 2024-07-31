@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift</title>
+    <link rel="stylesheet" href="gift.css"> <!-- Liên kết đến tệp CSS -->
+</head>
+<body>
+    <div id="mediaContainer" class="media-container">
+        <!-- Nội dung sẽ được hiển thị tại đây -->
+    </div>
+    
+    <script>
+        // URL của Firebase Realtime Database
+        const databaseURL = "https://xepchugame-default-rtdb.firebaseio.com/";
+
+        // Lấy mã ID từ URL
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Hàm để hiển thị nội dung từ Firebase
+        async function displayMedia() {
+            const id = getUrlParameter('id');
+            if (id) {
+                try {
+                    const response = await fetch(`${databaseURL}data/${id}.json`);
+                    if (!response.ok) throw new Error('Lỗi khi gửi yêu cầu: ' + response.status);
+                    
+                    const data = await response.json();
+                    console.log('Dữ liệu từ Firebase với mã đặc biệt', id + ':', data);
+
+                    const mediaContainer = document.getElementById('mediaContainer');
+                    const fileUrl = data.fileUrl;
+
+                    if (fileUrl) {
+                        const fileType = fileUrl.split('.').pop().toLowerCase();
+                        let displayContent = `
+                           
+                        `;
+                        
+                        if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png') {
+                            displayContent += `<img src="${fileUrl}" alt="Uploaded Image" />`;
+                        } else if (fileType === 'mp4') {
+                            displayContent += `<video controls autoplay muted src="${fileUrl}"></video>`; // Thêm thuộc tính muted
+                        } else if (fileType === 'mp3') {
+                            displayContent += `<audio controls src="${fileUrl}"></audio>`;
+                        }
+                        
+                        mediaContainer.innerHTML = displayContent;
+                        mediaContainer.classList.add('visible'); // Hiển thị nội dung với hiệu ứng
+                    } else {
+                        mediaContainer.innerHTML = '<p>Không tìm thấy URL của tệp.</p>';
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi lấy dữ liệu từ Firebase:', error);
+                }
+            } else {
+                console.error('ID không được cung cấp trong URL.');
+            }
+        }
+
+        // Hiển thị nội dung khi trang được tải
+        document.addEventListener('DOMContentLoaded', displayMedia);
+    </script>
+</body>
+</html>

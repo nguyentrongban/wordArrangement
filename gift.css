@@ -1,0 +1,119 @@
+/* styles.css */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top left, #ff9a9e, #fad0c4);
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Ngăn chặn cuộn trang không cần thiết */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw; /* Đảm bảo chiều rộng toàn màn hình */
+    text-align: center;
+    color: #333;
+}
+
+#mediaContainer {
+   
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 90vw; /* Chiếm 90% chiều rộng màn hình */
+    height: 90vh; /* Chiếm 90% chiều cao màn hình */
+    max-width: 1000px; /* Tối đa chiều rộng để phù hợp với màn hình lớn */
+    max-height: 600px; /* Tối đa chiều cao để phù hợp với nội dung */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ngăn chặn nội dung vượt quá khung */
+    box-sizing: border-box; /* Đảm bảo padding không làm rộng khung */
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s ease-in-out;
+    position: relative; /* Đặt khung tương đối để nội dung tuyệt đối nằm đúng vị trí */
+}
+
+#mediaContainer.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#mediaContainer p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+    margin: 0;
+    animation: popUp 0.6s ease-out forwards;
+    z-index: 1; /* Đảm bảo văn bản nằm trên video và hình ảnh */
+    position: absolute; /* Đảm bảo văn bản nằm trên video */
+    top: 20px; /* Căn chỉnh văn bản ở trên cùng */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+}
+
+#mediaContainer video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo video chiếm toàn bộ khung */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1s ease-out forwards;
+}
+
+#mediaContainer img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Đảm bảo hình ảnh hiển thị đúng kích thước mà không bị cắt bớt */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popUp {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    #mediaContainer {
+        padding: 1.5rem;
+    }
+
+    #mediaContainer p {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    #mediaContainer {
+        padding: 1rem;
+    }
+
+    #mediaContainer p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    #mediaContainer {
+        padding: 0.8rem;
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0; /* Đảm bảo góc khung không bị cắt bớt */
+        box-shadow: none; /* Loại bỏ box-shadow để phù hợp với màn hình nhỏ */
+    }
+
+    #mediaContainer p {
+        font-size: 14px;
+    }
+}

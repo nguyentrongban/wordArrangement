@@ -1,6 +1,11 @@
 // URL của Firebase Realtime Database
 const databaseURL = "https://xepchugame-default-rtdb.firebaseio.com/";
 
+// nXw7iwIePna4zl2r_VcgWtKen5U
+//Kbyjaii1aVBulLiCBOEUxqX8ef0
+// 264472846441245
+// db6ybs5au
+
 let linkToFirebaseData; // Định nghĩa biến linkToFirebaseData ở phạm vi toàn cục
 let correctOrder; // Định nghĩa biến correctOrder
 
@@ -41,20 +46,50 @@ async function addDataToFirebase() {
     try {
         const nameInput = document.getElementById("textInput");
         const recipientNameInput = document.getElementById("recipientName");
+        const fileInput = document.getElementById("fileInput");
         const name = nameInput.value.trim().replace(/\s+/g, ''); // Loại bỏ dấu cách từ chuỗi nhập liệu
         const recipientName = recipientNameInput.value.trim(); // Lấy tên người nhận và giữ nguyên dấu cách
-        
+        const file = fileInput.files[0]; // Lấy file từ input
+
         if (name && recipientName) {
+            let fileUrl = '';
+
+            if (file) {
+                // Tải ảnh lên Cloudinary
+                const cloudinaryUrl = 'https://api.cloudinary.com/v1_1/db6ybs5au/upload';
+                const uploadPreset = 'ml_default'; // Thay đổi nếu cần
+
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', uploadPreset);
+
+                const uploadResponse = await fetch(cloudinaryUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!uploadResponse.ok) {
+                    const errorData = await uploadResponse.json();
+                    throw new Error(`Lỗi khi gửi yêu cầu tải ảnh lên Cloudinary: ${uploadResponse.status} - ${errorData.error.message}`);
+                }
+
+                const uploadData = await uploadResponse.json();
+                fileUrl = uploadData.secure_url; // Lấy URL của ảnh từ phản hồi của Cloudinary
+            }
+
+            // Thêm dữ liệu vào Firebase
             const response = await fetch(`${databaseURL}data.json`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, recipientName })
+                body: JSON.stringify({ name, recipientName, fileUrl }) // Thêm fileUrl vào dữ liệu gửi lên Firebase
             });
+
             if (!response.ok) throw new Error("Lỗi khi gửi yêu cầu: " + response.status);
-            
+
             const responseData = await response.json();
             const newKey = responseData.name; // Lấy mã đặc biệt mới được tạo
-            console.log("Dữ liệu đã được thêm vào Firebase:", { id: newKey, name, recipientName });
+
+            console.log("Dữ liệu đã được thêm vào Firebase:", { id: newKey, name, recipientName, fileUrl });
 
             onDataAdded(newKey, recipientName); // Gọi hàm xử lý sau khi dữ liệu được thêm thành công
             return newKey; // Trả về mã đặc biệt của dữ liệu mới được thêm vào Firebase
@@ -67,9 +102,12 @@ async function addDataToFirebase() {
         }
     } catch (error) {
         console.error("Lỗi khi thêm dữ liệu vào Firebase:", error);
+        alert(`Có lỗi xảy ra: ${error.message}`); // Hiển thị thông báo lỗi chi tiết
         throw error;
     }
 }
+
+
 
 // Hàm để lấy dữ liệu từ Firebase bằng mã đặc biệt
 async function getDataFromFirebaseById(id) {
@@ -92,6 +130,27 @@ function onDataReceived(data) {
     console.log("correctOrder sau khi lấy dữ liệu từ Firebase:", correctOrder);
     
     displayCorrectOrderInWordList(); // Sau khi nhận dữ liệu từ Firebase, gọi hàm hiển thị dữ liệu
+
+     // Hiển thị tệp nếu có URL
+     const resultDiv = document.getElementById('result');
+     if (data.fileUrl) {
+         const fileType = data.fileUrl.split('.').pop();
+ 
+         let displayContent = `
+             <p>Uploaded Successfully!</p>
+             <a href="${data.fileUrl}" download>Download File</a>
+         `;
+ 
+         if (fileType === 'jpg' || fileType === 'jpeg' || fileType === 'png') {
+             displayContent += `<img src="${data.fileUrl}" alt="Uploaded Image" />`;
+         } else if (fileType === 'mp4') {
+             displayContent += `<video controls src="${data.fileUrl}"></video>`;
+         } else if (fileType === 'mp3') {
+             displayContent += `<audio controls src="${data.fileUrl}"></audio>`;
+         }
+ 
+         resultDiv.innerHTML = displayContent;
+     }
 }
 
 // Lắng nghe sự kiện click trên nút
@@ -186,10 +245,52 @@ function checkWords() {
     }
 }
 
-// Hàm để chuyển đến trang bước tiếp theo
-function nextStep() {
-    window.location.href = "cuaanh.html";
+
+// Hàm để lấy mã ID từ URL
+function getIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('id');
 }
+
+// Hàm để chuyển đến trang bước tiếp theo
+async function nextStep() {
+    const id = getIdFromURL(); // Lấy mã ID từ URL
+
+    if (!id) {
+        console.error("Không có mã ID trong URL");
+        return;
+    }
+
+    try {
+        // Lấy dữ liệu từ Firebase bằng mã ID
+        const data = await getDataFromFirebaseById(id);
+        
+        if (data && data.fileUrl && data.fileUrl.trim() !== "") {
+            // Nếu có URL, chuyển đến trang gift.html
+            window.location.href = `gift.html?id=${id}`;
+        } else {
+            // Nếu không có URL, chuyển đến trang cuaanh.html
+            window.location.href = `cuaanh.html`;
+        }
+    } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu từ Firebase:", error);
+    }
+}
+
+// Hàm để lấy dữ liệu từ Firebase bằng mã ID
+async function getDataFromFirebaseById(id) {
+    try {
+        const response = await fetch(`${databaseURL}data/${id}.json`);
+        if (!response.ok) throw new Error('Lỗi khi gửi yêu cầu: ' + response.status);
+        
+        const data = await response.json();
+        return data; // Trả về dữ liệu nhận được từ Firebase
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu từ Firebase:', error);
+        throw error;
+    }
+}
+
 
 // Hàm để xử lý khi người dùng không đồng ý
 function notnext() {
@@ -225,13 +326,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ẩn phần nhập tên người nhận và nhãn của nó
         const recipientNameInput = document.getElementById('recipientName');
         const recipientNameLabel = document.getElementById('recipientNameLabel');
-        
-        if (recipientNameInput) {
+        const UploadLabel = document.getElementById('UploadLabel');
+        const fileInput = document.getElementById('fileInput');
+
+        if (recipientNameInput && UploadLabel) {
             recipientNameInput.style.display = 'none';
+            UploadLabel.style.display = 'none';
         }
         
-        if (recipientNameLabel) {
+        if (recipientNameLabel && fileInput) {
             recipientNameLabel.style.display = 'none';
+            fileInput.style.display = 'none';
         }
     }
 
